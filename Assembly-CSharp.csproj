@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\Leaderboards\AddScore.cs" />
      <Compile Include="Assets\Scripts\Leaderboards\DisplayLeaderboard.cs" />
      <Compile Include="Assets\Scripts\Leaderboards\Leaderboard.cs" />
+     <Compile Include="Assets\Scripts\Moving.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity5.6/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 	private Rigidbody2D body;
 	private Vector2 jumpVelocity = new Vector2(0, 300);
 	private Vector3 groundedVector = new Vector3(0, -0.7f, 0);
-	private Vector2 velocity = new Vector2(2,0);
+	private Vector2 velocity = new Vector2(0,0);
 
 	// Use this for initialization
 	void Start () 
