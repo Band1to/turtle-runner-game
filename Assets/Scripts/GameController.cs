@@ -10,17 +10,24 @@ public class GameController : MonoBehaviour
 	public GameObject tileObject;
 	public Transform tileTransform;
 
+	public UnityEngine.UI.Text timeText;
+
+	private float time;
+
 	// Use this for initialization
 	void Start () 
 	{
-		
+		time = 0;
 	}
 
 	void Update () 
 	{
-		if (Time.time > lastTileTime)
+		time = Time.time;
+		timeText.text = "Time: " + time.ToString("N");
+
+		if (time > lastTileTime)
 		{
-			lastTileTime = Time.time + timePerTile;
+			lastTileTime = time + timePerTile;
 			GameObject.Instantiate(tileObject, tileTransform);
 		}
 	}
