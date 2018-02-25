@@ -9,9 +9,12 @@ public class PlayerController : MonoBehaviour
 	private Vector3 groundedVector = new Vector3(0, -0.7f, 0);
 	private Vector2 velocity = new Vector2(0,0);
 
+	private Transform startTransform;
+
 	// Use this for initialization
 	void Start () 
 	{
+		startTransform = transform;
 		body = this.gameObject.GetComponent<Rigidbody2D>();
 		body.velocity = velocity;
 	}
@@ -29,6 +32,13 @@ public class PlayerController : MonoBehaviour
 
 		// Move forward at a constant speed
 		body.velocity = new Vector2(velocity.x,  body.velocity.y);
+
+
+		// Respawn if fallen
+		if (transform.position.y < -7)
+		{
+			GameController.Instance.RestartLevel();
+		}
 	}
 
 	bool isGrounded()
