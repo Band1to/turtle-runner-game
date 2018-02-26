@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class GameController : MonoBehaviour 
+public class GameController : MonoBehaviour
 {
 	public static GameController Instance {get; private set; }
 	static bool created = false;
@@ -19,6 +19,12 @@ public class GameController : MonoBehaviour
 	private float time;
 	private float elapsedTime;
 
+	//Pause Screen
+	public GameState gameState;
+	public GameObject pauseScreen;
+	private float lastPausedTime;
+	private float elapsedPauseTime;
+
 	void Awake()
 	{
 		if (!created)
@@ -33,16 +39,29 @@ public class GameController : MonoBehaviour
 		}
 	}
 
-	// Use this for initialization
-	void Start () 
+	void ResetTime()
 	{
 		time = 0;
 		elapsedTime = 0;
+		lastPausedTime = 0;
+		elapsedPauseTime = 0;
+		lastTileTime = 0;
+	}
+
+	// Use this for initialization
+	void Start () 
+	{
+		ResetTime();
+		gameState.SetState(GameState.State.Playing);
 	}
 
 	void Update () 
 	{
-		time = Time.time - elapsedTime;
+		if (gameState.GetState() != GameState.State.Playing)
+			return;
+
+
+		time = Time.time - elapsedTime - elapsedPauseTime;
 		timeText.text = "Time: " + time.ToString("N");
 
 		if (time > lastTileTime)
@@ -52,6 +71,22 @@ public class GameController : MonoBehaviour
 		}
 	}
 
+	public void SetPaused()
+	{
+		lastPausedTime = Time.time;
+		pauseScreen.SetActive(true);
+		gameState.SetState(GameState.State.Paused);
+	}
+
+	public void SetPlaying()
+	{
+		elapsedPauseTime = Time.time - lastPausedTime;
+		time = Time.time - elapsedPauseTime;
+
+		pauseScreen.SetActive(false);
+		gameState.SetState(GameState.State.Playing);
+	}
+
 	public void RestartLevel()
 	{
 		foreach(Transform t in tileTransform)
@@ -59,8 +94,10 @@ public class GameController : MonoBehaviour
 			Destroy(t.gameObject);
 		}
 
+		ResetTime();
+
 		elapsedTime = Time.time;
-		lastTileTime = 0;
+
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 

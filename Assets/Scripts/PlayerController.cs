@@ -22,6 +22,18 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		//TODO: This can probably be implemented better from an OOP perspective
+		if (Input.GetKeyDown(KeyCode.Escape) && isGrounded())
+		{
+			if(GameController.Instance.gameState.GetState() == GameState.State.Playing)
+				GameController.Instance.SetPaused();
+			else if (GameController.Instance.gameState.GetState() == GameState.State.Paused)
+				GameController.Instance.SetPlaying();
+		}
+
+		if (GameController.Instance.gameState.GetState() != GameState.State.Playing)
+			return;
+		
 		Debug.DrawLine(transform.position, transform.position + groundedVector, Color.yellow);
 
 		// Jump
@@ -33,7 +45,6 @@ public class PlayerController : MonoBehaviour
 		// Move forward at a constant speed
 		body.velocity = new Vector2(velocity.x,  body.velocity.y);
 
-
 		// Respawn if fallen
 		if (transform.position.y < -7)
 		{
@@ -41,7 +52,7 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	bool isGrounded()
+	public bool isGrounded()
 	{
 		int blockedMask = (1 << LayerMask.NameToLayer("Impassable"));
 		return Physics2D.Linecast(transform.position, transform.position + groundedVector, blockedMask);

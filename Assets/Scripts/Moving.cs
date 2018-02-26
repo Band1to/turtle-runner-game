@@ -8,6 +8,9 @@ public class Moving : MonoBehaviour
 
 	void Update () 
 	{
+		if (GameController.Instance.gameState.GetState() != GameState.State.Playing)
+			return;
+		
 		transform.position += direction * Time.deltaTime;
 
 		// Destroy self when far enough away from player
