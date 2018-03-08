@@ -11,12 +11,20 @@ public class PlayerController : MonoBehaviour
 
 	private Transform startTransform;
 
+	public Sprite normalSprite;
+	public Sprite hidingSprite;
+
+	private SpriteRenderer spriteRenderer;
+	public int distanceTraveled = 0;
+
 	// Use this for initialization
 	void Start () 
 	{
 		startTransform = transform;
 		body = this.gameObject.GetComponent<Rigidbody2D>();
 		body.velocity = velocity;
+		spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+		distanceTraveled = 0;
 	}
 
 	// Update is called once per frame
@@ -35,14 +43,28 @@ public class PlayerController : MonoBehaviour
 			return;
 		
 		Debug.DrawLine(transform.position, transform.position + groundedVector, Color.yellow);
+			
+		GameController.Instance.turtleHiding = Input.GetKey(KeyCode.DownArrow);
 
-		// Jump
-		if (Input.GetKeyDown(KeyCode.Space) && isGrounded())
+
+		if (GameController.Instance.turtleHiding)
 		{
-			body.AddForce(jumpVelocity);
+			spriteRenderer.sprite = hidingSprite;
+		}
+		else
+		{
+			distanceTraveled++;
+			spriteRenderer.sprite = normalSprite;
+
+			// Jump
+			if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded())
+			{
+				body.AddForce(jumpVelocity);
+			}
 		}
 
-		// Move forward at a constant speed
+
+
 		body.velocity = new Vector2(velocity.x,  body.velocity.y);
 
 		// Respawn if fallen

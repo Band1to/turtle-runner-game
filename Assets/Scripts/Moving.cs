@@ -10,6 +10,10 @@ public class Moving : MonoBehaviour
 	{
 		if (GameController.Instance.gameState.GetState() != GameState.State.Playing)
 			return;
+
+		// Don't move if turtle is hiding
+		if (GameController.Instance.turtleHiding)
+			return;
 		
 		transform.position += direction * Time.deltaTime;
 

@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
 	public static GameController Instance {get; private set; }
 	static bool created = false;
 
-	public float timePerTile = 1.0f;
+	public float timePerTile = 0.4f;
 	private float lastTileTime = 0;
 
 	public GameObject tileObject;
@@ -24,6 +24,8 @@ public class GameController : MonoBehaviour
 	public GameObject pauseScreen;
 	private float lastPausedTime;
 	private float elapsedPauseTime;
+
+	public bool turtleHiding;
 
 	void Awake()
 	{
@@ -59,7 +61,6 @@ public class GameController : MonoBehaviour
 	{
 		if (gameState.GetState() != GameState.State.Playing)
 			return;
-
 
 		time = Time.time - elapsedTime - elapsedPauseTime;
 		timeText.text = "Time: " + time.ToString("N");
